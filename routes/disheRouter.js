@@ -80,7 +80,7 @@ dishRouter.route('/:dishId')
     })
 
 
-/**  Simple Route */
+/**  Route to perform operations on particular dish ID's comments  */
 dishRouter.route('/:dishId/comments')
     .get((req, res, next) => {
         Dishes.findById(req.params.dishId)
@@ -142,7 +142,7 @@ dishRouter.route('/:dishId/comments')
             .catch((err) => next(err));
     })
 
-/** Routing with :id in route url */
+/** Route to perform operations on particular comments */
 dishRouter.route('/:dishId/comments/:commentId')
     .get((req, res, next) => {
         Dishes.findById(req.params.dishId)
