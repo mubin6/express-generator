@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const Schema = new Schema();
+const Schema = mongoose.Schema;
 require('mongoose-currency').loadType(mongoose);
 const Currency = mongoose.Types.Currency;
 
@@ -17,9 +17,9 @@ const promotionSchema = new Schema({
     },
     price: {
         type: Currency,
-        min:0,
+        min: 0,
         required: true
-        
+
     },
     description: {
         type: String,
@@ -32,8 +32,7 @@ const promotionSchema = new Schema({
 
 }, {
     timeStamps: true
-}
-);
+});
 
 var Promotions = mongoose.model('Promotion', promotionSchema);
 
