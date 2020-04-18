@@ -10,8 +10,15 @@ router.use(bodyParser.json());
 const authenticate = require('../authenticate');
 
 /* GET users listing. */
-router.get('/', function(req, res, next) {
-    res.send('respond with a resource');
+router.get('/', authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
+    User.find({})
+        .then(user => {
+            console.log('user', user);
+            res.statusCode = 200;
+            res.setHeader('Content-type', 'application/json');
+            res.json(user);
+        }, err => next(err))
+        .catch(err => next(err))
 });
 
 router.post('/signup', (req, res, next) => {
@@ -55,16 +62,20 @@ router.post('/login', passport.authenticate('local'), (req, res, next) => {
 });
 
 router.get('/logout', (req, res, next) => {
-    console.log('req.session', req.session);
-    if (req.session) {
-        req.session.destroy();
-        res.clearCookie('session-id');
-        res.redirect('/');
-    } else {
-        const err = new Error('You are not logged in!');
-        err.status = 403;
-        next(err);
-    }
+
+    req.logout();
+    res.redirect('/');
+
+    // console.log('req.session', req.session);
+    /*  if (req.session) {
+         req.session.destroy();
+         res.clearCookie('session-id');
+         res.redirect('/');
+     } else {
+         const err = new Error('You are not logged in!');
+         err.status = 403;
+         next(err);
+     } */
 });
 
 
